@@ -12,9 +12,9 @@ export default function Home() {
 
   const searchRef = createRef()
 
-  const { tracks, setTracks } = usePlaylist();
-  const { searchTitle, setSearchTitle } = usePlaylist();
-  const [loading, setLoading] = useState(false);
+  const { tracks, setTracks, loading, setLoading,searchTitle, setSearchTitle } = usePlaylist();
+
+
   const fetcher = () => clienteAxios("/top").then(data =>
     setTracks(data.data)
   );
@@ -29,6 +29,7 @@ export default function Home() {
       try{
         setLoading(true)
         const response = await clienteAxios(`/tracks?$search=${searchRef.current.value}`);
+        console.log(response);
         setTracks(response.data)
         setLoading(false)
        
@@ -88,7 +89,6 @@ export default function Home() {
 
               key={track.id}
               track={track}
-              isPlayList={false}
 
             />
           ))

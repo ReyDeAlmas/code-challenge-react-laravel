@@ -13,8 +13,9 @@ class TrackController extends Controller
 {
     public function index(Request $request)
     {
-       
 
+        try{
+            
         $validator = Validator::make($request->all(), [
             'search' => 'nullable|string',
         ]);
@@ -50,6 +51,12 @@ class TrackController extends Controller
         }else{
             return response()->json(['error' => 'La solicitud no fue exitosa'], $jsonResponse->status());
         }
+        }catch(\Exception $e)
+        {
+            return response()->json(['error' => $e->getMessage()], $jsonResponse->status());
+        }
+       
+
     }
 
    

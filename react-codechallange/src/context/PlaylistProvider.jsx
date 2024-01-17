@@ -9,10 +9,13 @@ const PlaylistContext = createContext();
 const PlaylistProvider = ({children}) => {
 
     const [modal, setModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [playList, setPlayList] = useState([]);
     const [searchTitle, setSearchTitle] = useState('Top Ten Mexico');
     const [search, setSearch] = useState('');
     const [tracks, setTracks] = useState([]);
+
+   
 
     
 
@@ -28,19 +31,15 @@ const PlaylistProvider = ({children}) => {
 
     useEffect(() => {
         getPlaylist();
+       
     }, [])
-    
     
 
     const addTrack = (track, like) => {
 
         const existingTrackIndex = playList.findIndex((existingTrack) => existingTrack.id === track.id);
-
-       
-        if (existingTrackIndex === -1) {
+        if (existingTrackIndex === -1 && !like) {
             
-           
-
             clienteAxios.post('/playlist',  track )
             .then(response => {
                 console.log('Respuesta de Laravel:', response.data);
@@ -49,29 +48,35 @@ const PlaylistProvider = ({children}) => {
                
             })
             .catch(error => {
-                
                 toast.error("Algo ha salido mal, intentalo de nuevo")
                 return false;
             });
-
-            
-
 
 
         } else {
             clienteAxios.delete(`/playlist/${track.id}`)
             .then(response => {
+                setLoading(true);
                 console.log('Respuesta de Laravel:', response.data);
-               
                 const updatedPlayList = [...playList];
                 updatedPlayList.splice(existingTrackIndex, 1);
                 setPlayList(updatedPlayList);
                 toast.warn('Eliminado de tu playlist');
+
+                const updatedTracks = [...tracks];
+                const currentTrack = updatedTracks.find(currentTrack => track.id === currentTrack.id);
+                if(currentTrack)
+                {
+                    currentTrack.added = false;
+                    setTracks(updatedTracks);
+                }
+                
+                 setLoading(false);
              
                
             })
             .catch(error => {
-                
+                console.log(error);
                 toast.error("Algo ha salido mal, intentalo de nuevo")
                 return false;
             });
@@ -111,7 +116,9 @@ const PlaylistProvider = ({children}) => {
             searchTitle,
             tracks,
             setTracks,
-            setSearchTitle
+            setSearchTitle,
+            loading,
+            setLoading
            
         }}
         >
