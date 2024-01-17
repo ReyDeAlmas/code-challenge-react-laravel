@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes gradientAnimation {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.gradient-animation {
+    animation: gradientAnimation 5s linear infinite;
+    background-size: 200% 200%;
+    background-image: linear-gradient(45deg, #3498db, #2ecc71);
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+.gradient-animation {
+    animation: gradientAnimation 5s linear infinite;
+    background-size: 200% 200%;
+    background-image: linear-gradient(45deg, #3498db, #2ecc71);
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.animacion {
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    position: absolute;
+    animation: moverArribaAbajo 2s infinite; /* 2s de duración, infinita repetición */
+}
+
+@keyframes moverArribaAbajo {
+    0%, 100% {
+        transform: translateY(0); /* Posición inicial y final */
+    }
+    50% {
+        transform: translateY(0.2vh); /* Posición intermedia, 100vh es la altura de la ventana */
+    }
+}
